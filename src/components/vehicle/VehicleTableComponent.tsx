@@ -1,33 +1,41 @@
 import {Vehicle} from "../../models/vehicle.ts";
 
-export const VehicleTableComponent = ({vehicles}: { vehicles: Vehicle[] }) => {
+export const VehicleTableComponent = ({vehicles = []}: { vehicles?: Vehicle[] }) => {
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-2 mt-7">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th className="px-6 py-3">Vehicle Code</th>
-                    <th className="px-6 py-3">License Plate</th>
-                    <th className="px-6 py-3">Category</th>
-                    <th className="px-6 py-3">Fuel</th>
-                    <th className="px-6 py-3">Status</th>
-                    <th className="px-6 py-3">Remarks</th>
+        <div className="overflow-x-auto mx-2 mt-7 bg-gray-50 p-4 rounded-lg shadow-lg">
+            <table className="w-full border-collapse bg-white text-sm text-gray-800 shadow-md sm:rounded-lg">
+                <thead>
+                <tr className="bg-light-blue-200 text-gray-700 text-base font-semibold uppercase tracking-wide border-b border-dashed">
+                    <th className="px-6 py-4 text-left">Vehicle Code</th>
+                    <th className="px-6 py-4 text-left">License Plate</th>
+                    <th className="px-6 py-4 text-left">Category</th>
+                    <th className="px-6 py-4 text-left">Fuel</th>
+                    <th className="px-6 py-4 text-left">Status</th>
+                    <th className="px-6 py-4 text-left">Remarks</th>
                 </tr>
                 </thead>
                 <tbody>
-                {vehicles.map((vehicle: Vehicle, index: number) => (
-                    <tr
-                        key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    >
-                        <td className="px-6 py-4">{vehicle.vehicle_code}</td>
-                        <td className="px-6 py-4">{vehicle.licen_plate}</td>
-                        <td className="px-6 py-4">{vehicle.category}</td>
-                        <td className="px-6 py-4">{vehicle.fuel}</td>
-                        <td className="px-6 py-4">{vehicle.status}</td>
-                        <td className="px-6 py-4">{vehicle.remarks}</td>
+                {vehicles.length > 0 ? (
+                    vehicles.map((vehicle: Vehicle, index: number) => (
+                        <tr
+                            key={index}
+                            className="even:bg-gray-50 odd:bg-white hover:bg-light-blue-50 transition duration-200 border-b border-dashed"
+                        >
+                            <td className="px-6 py-4 text-sm">{vehicle.vehicle_code}</td>
+                            <td className="px-6 py-4 text-sm">{vehicle.license_plate}</td>
+                            <td className="px-6 py-4 text-sm">{vehicle.category}</td>
+                            <td className="px-6 py-4 text-sm">{vehicle.fuel}</td>
+                            <td className="px-6 py-4 text-sm">{vehicle.status}</td>
+                            <td className="px-6 py-4 text-sm">{vehicle.remarks}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr className="border-b border-dashed">
+                        <td colSpan={6} className="text-center py-6 text-gray-500 text-base">
+                            No vehicles available.
+                        </td>
                     </tr>
-                ))}
+                )}
                 </tbody>
             </table>
         </div>
