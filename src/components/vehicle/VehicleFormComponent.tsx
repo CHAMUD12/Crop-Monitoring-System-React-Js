@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Vehicle} from "../../models/vehicle.ts";
 import {addVehicle, deleteVehicle, updateVehicle} from "../../reducers/VehicleSlice.tsx";
@@ -6,7 +6,7 @@ import {VehicleTableComponent} from "./VehicleTableComponent";
 
 export const VehicleFormComponent = () => {
     const dispatch = useDispatch();
-    //
+
     const vehicles = useSelector((state) => state.vehicle);
 
     const [vehicleCode, setVehicleCode] = useState("");
@@ -17,6 +17,11 @@ export const VehicleFormComponent = () => {
     const [remarks, setRemarks] = useState("");
 
     const handleVehicleOperation = (type: string) => {
+        if (!vehicleCode || !licensePlate || !category || !fuel || !status) {
+            alert("Please fill out all required fields.");
+            return;
+        }
+
         const newVehicle: Vehicle = {
             vehicle_code: vehicleCode,
             license_plate: licensePlate,
@@ -53,47 +58,41 @@ export const VehicleFormComponent = () => {
         setRemarks("");
     };
 
-    const handleSearchByCode = () => {
-        const foundVehicle = vehicles.find(
-            (vehicle: Vehicle) => vehicle.vehicle_code === vehicleCode
-        );
-        if (foundVehicle) {
-            setLicensePlate(foundVehicle.licen_plate);
-            setCategory(foundVehicle.category);
-            setFuel(foundVehicle.fuel);
-            setStatus(foundVehicle.status);
-            setRemarks(foundVehicle.remarks);
-        } else {
-            alert("Vehicle not found");
-        }
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleSearchByCode = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            e.preventDefault(); // Prevent form submission
-            handleSearchByCode();
+            const foundVehicle = vehicles.find(
+                (vehicle: Vehicle) => vehicle.vehicle_code === vehicleCode
+            );
+            if (foundVehicle) {
+                setLicensePlate(foundVehicle.license_plate);
+                setCategory(foundVehicle.category);
+                setFuel(foundVehicle.fuel);
+                setStatus(foundVehicle.status);
+                setRemarks(foundVehicle.remarks);
+            } else {
+                alert("Vehicle not found");
+            }
         }
     };
-
 
     return (
         <>
-            <form className="mx-2 mt-6">
-                <div className="grid gap-6 mb-6 md:grid-cols-3">
+            <form className="mx-2 mt-4 p-4">
+                <div className="grid gap-6 mb-6 grid-cols-1 sm:grid-cols-2">
                     <div>
                         <label
                             htmlFor="vehicle_code"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
                             Vehicle Code
                         </label>
                         <input
                             type="text"
                             id="vehicle_code"
-                            onChange={(e) => setVehicleCode(e.target.value)}
-                            onKeyDown={handleKeyDown}
                             value={vehicleCode}
-                            className="w-full p-2 border rounded border-blue-600"
+                            onChange={(e) => setVehicleCode(e.target.value)}
+                            onKeyDown={handleSearchByCode}
+                            className="w-full p-2 border rounded border-gray-300"
                             placeholder="V123"
                             required
                         />
@@ -101,16 +100,16 @@ export const VehicleFormComponent = () => {
                     <div>
                         <label
                             htmlFor="license_plate"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
                             License Plate
                         </label>
                         <input
                             type="text"
                             id="license_plate"
-                            onChange={(e) => setLicensePlate(e.target.value)}
                             value={licensePlate}
-                            className="w-full p-2 border rounded border-blue-600"
+                            onChange={(e) => setLicensePlate(e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300"
                             placeholder="ABC-1234"
                             required
                         />
@@ -118,97 +117,117 @@ export const VehicleFormComponent = () => {
                     <div>
                         <label
                             htmlFor="category"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
                             Category
                         </label>
-                        <input
-                            type="text"
+                        <select
                             id="category"
-                            onChange={(e) => setCategory(e.target.value)}
                             value={category}
-                            className="w-full p-2 border rounded border-blue-600"
-                            placeholder="Truck"
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300"
                             required
-                        />
+                        >
+                            <option value="" disabled>
+                                Select Vehicle Category
+                            </option>
+                            <option value="Car">Car</option>
+                            <option value="Van">Van</option>
+                            <option value="Motorbikes">Motorbikes</option>
+                            <option value="Tractors-Land masters">Tractors-Land masters</option>
+                            <option value="Tractors-4WD">Tractors-4WD</option>
+                            <option value="Tankers truck">Tankers truck</option>
+                            <option value="Land vehicles">Land vehicles</option>
+                            <option value="Lorry">Lorry</option>
+                        </select>
                     </div>
                     <div>
                         <label
                             htmlFor="fuel"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
-                            Fuel
+                            Fuel Type
                         </label>
-                        <input
-                            type="text"
+                        <select
                             id="fuel"
-                            onChange={(e) => setFuel(e.target.value)}
                             value={fuel}
-                            className="w-full p-2 border rounded border-blue-600"
-                            placeholder="Diesel"
+                            onChange={(e) => setFuel(e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300"
                             required
-                        />
+                        >
+                            <option value="" disabled>
+                                Select Fuel Type
+                            </option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Kerosene">Kerosene</option>
+                            <option value="Fuel oil">Fuel oil</option>
+                            <option value="Bitumen">Bitumen</option>
+                        </select>
                     </div>
                     <div>
                         <label
                             htmlFor="status"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
                             Status
                         </label>
-                        <input
-                            type="text"
+                        <select
                             id="status"
-                            onChange={(e) => setStatus(e.target.value)}
                             value={status}
-                            className="w-full p-2 border rounded border-blue-600"
-                            placeholder="Active"
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300"
                             required
-                        />
+                        >
+                            <option value="" disabled>
+                                Select Status
+                            </option>
+                            <option value="Available">Available</option>
+                            <option value="Out of Service">Out of Service</option>
+                        </select>
                     </div>
                     <div>
                         <label
                             htmlFor="remarks"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark"
+                            className="block mb-2 text-base font-medium text-blue-700 shadow-sm"
                         >
                             Remarks
                         </label>
                         <input
                             type="text"
                             id="remarks"
-                            onChange={(e) => setRemarks(e.target.value)}
                             value={remarks}
-                            className="w-full p-2 border rounded border-blue-600"
+                            onChange={(e) => setRemarks(e.target.value)}
+                            className="w-full p-2 border rounded border-gray-300"
                             placeholder="Good Condition"
                         />
                     </div>
                 </div>
+
+                <div className="flex gap-4 justify-start mx-2 mt-8">
+                    <button
+                        type="button"
+                        onClick={() => handleVehicleOperation("ADD_VEHICLE")}
+                        className="px-5 py-2 text-sm font-medium text-gray-800 bg-yellow-200 rounded-lg shadow-md border border-yellow-400 hover:bg-yellow-300"
+                    >
+                        Add Vehicle
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleVehicleOperation("UPDATE_VEHICLE")}
+                        className="px-5 py-2 text-sm font-medium text-gray-800 bg-green-200 rounded-lg shadow-md border border-green-400 hover:bg-green-300"
+                    >
+                        Update Vehicle
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleVehicleOperation("DELETE_VEHICLE")}
+                        className="px-5 py-2 text-sm font-medium text-gray-800 bg-red-200 rounded-lg shadow-md border border-red-400 hover:bg-red-300"
+                    >
+                        Delete Vehicle
+                    </button>
+                </div>
             </form>
-
-            <div className="grid gap-5 md:grid-cols-3 mx-20">
-                <button
-                    type="button"
-                    onClick={() => handleVehicleOperation("ADD_VEHICLE")}
-                    className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                >
-                    Add Vehicle
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleVehicleOperation("UPDATE_VEHICLE")}
-                    className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                >
-                    Update Vehicle
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleVehicleOperation("DELETE_VEHICLE")}
-                    className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                >
-                    Delete Vehicle
-                </button>
-            </div>
-
             <VehicleTableComponent vehicles={vehicles}/>
         </>
     );
