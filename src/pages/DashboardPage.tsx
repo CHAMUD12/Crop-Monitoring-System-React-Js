@@ -5,7 +5,7 @@ export const DashboardPage = () => {
 
     return (
         <>
-            <HeaderComponent section="Dashboard Section"/>
+            <HeaderComponent section="WELCOME TO DASHBOARD"/>
             <StaffCardComponent/>
         </>
     );

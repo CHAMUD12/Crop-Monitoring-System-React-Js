@@ -60,7 +60,7 @@ export const SidebarComponent = () => {
                 {/* Menu */}
                 <ul className="space-y-2 mt-10">
                     {[
-                        {to: "/", icon: FaHome, label: "Home"},
+                        {to: "/", icon: FaHome, label: "Dashboard"},
                         {to: "/fields", icon: FaTractor, label: "Field"},
                         {to: "/crops", icon: FaLeaf, label: "Crop"},
                         {to: "/vehicles", icon: FaCar, label: "Vehicle"},
