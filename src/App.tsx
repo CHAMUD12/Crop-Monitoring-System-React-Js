@@ -6,6 +6,7 @@ import {VehiclePage} from "./pages/VehiclePage.tsx";
 import {FieldPage} from "./pages/FieldPage.tsx";
 import {NotFoundPage} from "./pages/NotFoundPage.tsx";
 import {CropPage} from "./pages/CropPage.tsx";
+import {StaffPage} from "./pages/StaffPage.tsx";
 
 
 function App() {
@@ -18,7 +19,8 @@ function App() {
                 {path: '', element: <DashboardPage/>},
                 {path: '/fields', element: <FieldPage/>},
                 {path: '/vehicles', element: <VehiclePage/>},
-                { path : '/crops', element : <CropPage/>},
+                {path: '/crops', element: <CropPage/>},
+                {path: '/staffs', element: <StaffPage/>},
             ]
         },
         {
