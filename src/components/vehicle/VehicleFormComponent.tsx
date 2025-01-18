@@ -221,6 +221,13 @@ export const VehicleFormComponent = () => {
                     </button>
                     <button
                         type="button"
+                        onClick={() => clearForm()}
+                        className="px-5 py-2 text-sm font-medium text-gray-800 bg-orange-200 rounded-lg shadow-md border border-orange-400 hover:bg-orange-300"
+                    >
+                        Clear
+                    </button>
+                    <button
+                        type="button"
                         onClick={() => handleVehicleOperation("DELETE_VEHICLE")}
                         className="px-5 py-2 text-sm font-medium text-gray-800 bg-red-200 rounded-lg shadow-md border border-red-400 hover:bg-red-300"
                     >
